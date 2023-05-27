@@ -6,17 +6,23 @@ export default function UpdateTaskModal({ show, handleClose }) {
     const { statuses, priorities, editTask, updateTask, setEditTask } = useTasks()
     const titleRef = useRef()
     const descriptionRef = useRef()
-    const dueRef = useRef()
+    const dueDateRef = useRef()
     const priorityRef = useRef()
     const statusRef = useRef()
+    const currentDate = new Date().toLocaleDateString('en-CA')
 
     function handleUpdate(e) {
         e.preventDefault()
+        const dueDateString = dueDateRef.current.value
+        const splitDate = dueDateString.split("-")
+        const prettyDate = `${splitDate[1]}/${splitDate[2]}/${splitDate[0]}`
+
         updateTask({
             id: editTask.id,
             title: titleRef.current.value,
             description: descriptionRef.current.value,
-            due: dueRef.current.value,
+            due: prettyDate,
+            dueDateString,
             priority: priorityRef.current.value,
             status: statusRef.current.value,
             created: editTask.created
@@ -25,14 +31,26 @@ export default function UpdateTaskModal({ show, handleClose }) {
         setEditTask([])
     }
 
-    function handleDelete(e) {
+    function confirmDelete() {
+        return new Promise((resolve) => {
+            const confirmed = window.confirm("Are you sure you want to delete this task?");
+            resolve(confirmed);
+        })
+    }
+
+    async function handleDelete(e) {
         e.preventDefault()
-        updateTask({
-            id: editTask.id,
-            destroy:true
-        })        
-        handleClose()
-        setEditTask([])
+        const confirmed = await confirmDelete()
+        if (confirmed) {
+            updateTask({
+                id: editTask.id,
+                destroy:true
+            })        
+            handleClose()
+            setEditTask([])
+        } else {            
+            return; // Stop the function execution, if desired
+        }          
     }
 
     return (
@@ -52,8 +70,8 @@ export default function UpdateTaskModal({ show, handleClose }) {
                         <Form.Text>100 character limit</Form.Text>
                     </Form.Group>
                     <Form.Group className='mb-3' controlId='due'>
-                        <Form.Label>TO DO DUE DATE</Form.Label>
-                        <Form.Control ref={dueRef} type='text' required defaultValue={editTask.due}/>
+                        <Form.Label>Due Date {editTask.due}</Form.Label>
+                        <Form.Control type='date' min={currentDate} defaultValue={editTask.due} name='due' ref={dueDateRef}/>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="piority" name="priority">
                         <Form.Label>Set Priority</Form.Label>
@@ -89,7 +107,7 @@ export default function UpdateTaskModal({ show, handleClose }) {
                     </Form.Group>
                     <div className="d-flex justify-content-end">
                         <Button variant="primary" type="submit" onClick={handleUpdate}>Update</Button>
-                        <Button variant='danger' type='submit' onClick={handleDelete}>Delete</Button>
+                        <Button variant='danger' type='submit' onClick={handleDelete} className='ms-2'>Delete</Button>
                     </div>
                 </Modal.Body>
             </Form>

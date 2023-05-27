@@ -2,6 +2,7 @@ import { Form, Card, Row, Col, ProgressBar } from 'react-bootstrap'
 import flagRed from '../assets/flag-red.png'
 import flagYellow from '../assets/flag-yellow.png'
 import flagBlue from '../assets/flag-blue.png'
+import flagGreen from '../assets/flag-green.png'
 import flagGray from '../assets/flag-gray.png'
 import edit from '../assets/edit.png'
 import { useTasks } from '../contexts/TasksContext'
@@ -16,7 +17,10 @@ const custStyle = {
     borderColor: '#C9C9C9',
     width: '100%',
     margin: '5px 0px'
-  },
+    },
+  dates: {
+      fontSize: ".7rem"    
+  }
 }
 
 export default function TaskCard({ id, title, description, due, created, progress, priority, status, openModal }) {
@@ -40,6 +44,32 @@ export default function TaskCard({ id, title, description, due, created, progres
         }
     })()
 
+    const statusImg = (() => {
+        switch (status) {
+        case 'Created':
+            return flagBlue
+        case 'Started':
+            return flagYellow
+        case 'Completed':
+            return flagGreen
+        default:
+            return flagBlue
+    }
+    })()
+
+    const progressVariant = (() => {
+        switch (progress) {
+        case 30:
+            return "info"
+        case 60:
+            return "warning"
+        case 100:
+            return "success"
+        default:
+            return "info"
+    }
+    })()
+
     function handleChange(e) {
         e.preventDefault()
         const taskObj = { id, title, description, due, created, priority: priorityRef.current.value, status: statusRef.current.value }
@@ -53,6 +83,12 @@ export default function TaskCard({ id, title, description, due, created, progres
         openModal()
         //setShowUpdateTaskModal(true)
     }
+
+    function dueDate(epoch){
+        const date = new Date(epoch)
+        const convertedDate = date.toLocaleDateString('en-US')
+        return convertedDate
+    }
         
     return (
         <Card style={custStyle.mainTxt} className='mb-3'>
@@ -65,10 +101,13 @@ export default function TaskCard({ id, title, description, due, created, progres
                     </Col>
                 </Row>
             </Card.Title>
-                <Card.Text>{description}</Card.Text>
-                <Card.Text>Due Date: {due}</Card.Text>
-            <Card.Text>Progress</Card.Text>
-            <ProgressBar variant='info' min={0} max={100} now={progress} />
+                <Card.Text className='mb-1'>{description}</Card.Text>
+                <Row className='mb-2 mt-2'>
+                    <Col sm={6}><Card.Text style={custStyle.dates}>Created: {dueDate(created)}</Card.Text></Col>
+                    <Col sm={6}><Card.Text style={custStyle.dates}>Due: {due}</Card.Text></Col>
+                </Row>
+            <Card.Text className='mb-1'>Progress</Card.Text>
+            <ProgressBar striped variant={progressVariant} min={0} max={100} now={progress} />
             <div style={custStyle.divider}></div>
             <Row>
                 <Col sm={6}>
@@ -106,7 +145,7 @@ export default function TaskCard({ id, title, description, due, created, progres
                 </Row>
                 <Row>
                     <Col className='d-flex justify-content-start'>
-                    <div style={{ maxWidth: '14px', paddingTop: '5px' }}><img src={flagRed} alt='Red Flag' /></div>
+                    <div style={{ maxWidth: '14px', paddingTop: '5px' }}><img src={statusImg} alt='Status Flag' /></div>
                     <Form onChange={handleChange}>
                         <Form.Group controlId='priority'>
                             <Form.Select className='bg-transparent border-0' name="status" ref={statusRef}>

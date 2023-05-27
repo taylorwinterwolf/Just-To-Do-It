@@ -1,22 +1,27 @@
 import { useRef } from 'react'
-import { Modal, Form, Button } from 'react-bootstrap'
+import { Modal, Form, Button, Row, Col } from 'react-bootstrap'
 import { useTasks } from '../contexts/TasksContext'
 
 export default function AddTaskModal({ show, handleClose }) {
     const { addTask, priorities } = useTasks()
     const titleRef = useRef()
     const descriptionRef = useRef()
-    const dueRef = useRef()
+    const dueDateRef = useRef()//Looks like this 2023-05-30
     const priorityRef = useRef()
 
-    
+    const currentDate = new Date().toLocaleDateString('en-CA')
 
     function handleSubmit(e) {
         e.preventDefault()
+        const dueDateString = dueDateRef.current.value
+        const splitDate = dueDateString.split("-")
+        const prettyDate = `${splitDate[1]}/${splitDate[2]}/${splitDate[0]}`
+        
         addTask({
             title: titleRef.current.value,
             description: descriptionRef.current.value,
-            due: dueRef.current.value,
+            due: prettyDate,
+            dueDateString,
             priority: priorityRef.current.value,
         })
         handleClose()
@@ -35,12 +40,12 @@ export default function AddTaskModal({ show, handleClose }) {
                     </Form.Group>
                     <Form.Group className='mb-3' controlId='description'>
                         <Form.Label>Description</Form.Label>
-                        <Form.Control ref={descriptionRef} type='text' required maxLength={100} />
+                        <Form.Control ref={descriptionRef} as="textarea" required maxLength={100} />
                         <Form.Text>100 character limit</Form.Text>
                     </Form.Group>
-                    <Form.Group className='mb-3' controlId='due'>
-                        <Form.Label>TO DO DUE DATE</Form.Label>
-                        <Form.Control ref={dueRef} type='text' required/>
+                    <Form.Label>Due Date</Form.Label>
+                    <Form.Group>
+                        <Form.Control type='date' min={currentDate} name='due' ref={dueDateRef}/>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="piority">
                         <Form.Label>Set Priority</Form.Label>

@@ -16,15 +16,13 @@ export const TasksProvider = ({ children }) => {
     const statuses = ["Created", "Started", "Completed"]
 
     //TODO add task function
-    function addTask({ title, description, due, priority}) {
+    function addTask({ title, description, due, dueDateString, priority}) {
         //All new tasks have a progress of 30
         const progress = 30
         const created = Date.now()
         const status = "Created"
 
-        const values = { id: uuidV4(), title, description, due, priority, progress, created, status }
-        
-        //console.log(values)
+        const values = { id: uuidV4(), title, description, due, dueDateString, priority, progress, created, status }
             
         setTasks(prevTasks => {
             return [...prevTasks, values]
@@ -33,7 +31,7 @@ export const TasksProvider = ({ children }) => {
     }
 
     //TO DO update task function
-    function updateTask({ id, title, description, due, priority, status, created, destroy }) {
+    function updateTask({ id, title, description, due, dueDateString, priority, status, created, destroy }) {
         const progress = (() => {
             switch (status) {
                 case 'Started':
@@ -54,7 +52,7 @@ export const TasksProvider = ({ children }) => {
         //Add new entry if task is not simply getting deleted
         if (!destroy) {
             setTasks(prevTasks => {
-                return [...prevTasks, {id: uuidV4(), title, description, due, progress, priority, status, created}]
+                return [...prevTasks, {id: uuidV4(), title, description, due, dueDateString, progress, priority, status, created}]
             })  
         } 
     }

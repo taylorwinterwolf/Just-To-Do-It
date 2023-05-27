@@ -11,7 +11,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 
 function App() {
   const [showAddTaskModal, setShowAddTaskModal] = useState(false)
-  const [showUpdateTaskModal, setShowUpdateTaskModal] = useState(true)
+  const [showUpdateTaskModal, setShowUpdateTaskModal] = useState(false)
   const taskSections = ["To Do", "In Progress", "Completed"]
 
   return (

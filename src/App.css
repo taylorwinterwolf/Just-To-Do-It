@@ -12,3 +12,8 @@
 *:focus {
   box-shadow: none !important;
 }
+
+.muteMonth{
+  font-size: .7rem;
+  color: grey;
+}

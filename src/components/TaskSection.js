@@ -76,7 +76,8 @@ export default function TaskSection({ section, openUpdateModal }) {
         </Badge>
         <Row>
           <Col>
-            {tasks.map(task => {
+          {tasks.sort((t1, t2)=> t2.created - t1.created)
+            .map(task => {
               if (task.status === taskStatus) {
                 return (
                   <TaskCard
