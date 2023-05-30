@@ -11,6 +11,7 @@ export function useTasks() {
 export const TasksProvider = ({ children }) => {    
     const [tasks, setTasks] = useLocalStorage("tasks", [])
     const [editTask, setEditTask] = useLocalStorage("edit", [])
+    const [archivedTask, setArchivedTask] = useLocalStorage("archive", [])
 
     const priorities = ["None", "Low", "Medium", "High"]
     const statuses = ["Created", "Started", "Completed"]
@@ -30,7 +31,6 @@ export const TasksProvider = ({ children }) => {
         
     }
 
-    //TO DO update task function
     function updateTask({ id, title, description, due, dueDateString, priority, status, created, destroy }) {
         const progress = (() => {
             switch (status) {
@@ -57,8 +57,24 @@ export const TasksProvider = ({ children }) => {
         } 
     }
 
+    function archiveTask({ id, title, description, due, dueDateString, priority, status, progress, created }) {
+
+        //Destroy old entry
+        setTasks(prevTasks => {
+            //Filter through tasks and only keep tasks that don't match the ID
+            return prevTasks.filter(task => task.id !== id)
+        })
+        
+        const values = { id, title, description, due, dueDateString, priority, status, progress, created }
+            
+        setArchivedTask(prevTasks => {
+            return [...prevTasks, values]
+        })
+        
+    }
+
     return (
-        <TasksContext.Provider value={{tasks, addTask, updateTask, setEditTask, priorities, statuses, editTask}}>
+        <TasksContext.Provider value={{tasks, addTask, updateTask, archiveTask, setEditTask, priorities, statuses, editTask}}>
             { children }
         </TasksContext.Provider>
     )

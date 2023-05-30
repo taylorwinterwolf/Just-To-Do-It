@@ -1,4 +1,4 @@
-import { Form, Card, Row, Col, ProgressBar } from 'react-bootstrap'
+import { Form, Card, Row, Col, ProgressBar, Button } from 'react-bootstrap'
 import flagRed from '../assets/flag-red.png'
 import flagYellow from '../assets/flag-yellow.png'
 import flagBlue from '../assets/flag-blue.png'
@@ -23,9 +23,10 @@ const custStyle = {
   }
 }
 
-export default function TaskCard({ id, title, description, due, created, progress, priority, status, openModal }) {
+export default function TaskCard({ id, title, description, due, created, progress, priority, status, dueDateString
+, openModal }) {
 
-    const { priorities, statuses, updateTask, setEditTask } = useTasks()
+    const { priorities, statuses, updateTask, setEditTask, archiveTask } = useTasks()
     const statusRef = useRef("")
     const priorityRef = useRef("")
     
@@ -82,6 +83,11 @@ export default function TaskCard({ id, title, description, due, created, progres
         setEditTask(taskObj)
         openModal()
         //setShowUpdateTaskModal(true)
+    }
+
+    function archivedClicked() {
+        const taskObj = { id, title, description, due, dueDateString, created, priority, status, progress }
+        archiveTask(taskObj)    
     }
 
     function dueDate(epoch){
@@ -145,30 +151,37 @@ export default function TaskCard({ id, title, description, due, created, progres
                 </Row>
                 <Row>
                     <Col className='d-flex justify-content-start'>
-                    <div style={{ maxWidth: '14px', paddingTop: '5px' }}><img src={statusImg} alt='Status Flag' /></div>
-                    <Form onChange={handleChange}>
-                        <Form.Group controlId='priority'>
-                            <Form.Select className='bg-transparent border-0' name="status" ref={statusRef}>
-                                <option key={status} value={status}>
-                                    {status}
-                                </option>
-                                {statuses.map(mapStatus => {
-                                    if (mapStatus !== status) {
-                                        return(
-                                            <option key={mapStatus} value={mapStatus}>
-                                                {mapStatus}
-                                            </option>
-                                        )
-                                    }
-                                    return null
-                                })}
-                            </Form.Select>
-                        </Form.Group>
-                    </Form>
+                        <div style={{ maxWidth: '14px', paddingTop: '5px' }}><img src={statusImg} alt='Status Flag' /></div>
+                        <Form onChange={handleChange}>
+                            <Form.Group controlId='priority'>
+                                <Form.Select className='bg-transparent border-0' name="status" ref={statusRef}>
+                                    <option key={status} value={status}>
+                                        {status}
+                                    </option>
+                                    {statuses.map(mapStatus => {
+                                        if (mapStatus !== status) {
+                                            return(
+                                                <option key={mapStatus} value={mapStatus}>
+                                                    {mapStatus}
+                                                </option>
+                                            )
+                                        }
+                                        return null
+                                    })}
+                                </Form.Select>
+                            </Form.Group>
+                        </Form>
                     </Col>
                 </Row>
                 </Col>
-            </Row>
+                </Row>
+                {status === 'Completed' &&
+                    <Row>
+                        <Col className='d-flex justify-content-start'>
+                            <Button variant='outline-primary' size="sm" onClick={archivedClicked}>Archive</Button>
+                        </Col>
+                    </Row>
+                    }
             </Card.Body>
         </Card>
     )

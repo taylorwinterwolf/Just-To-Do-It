@@ -86,6 +86,7 @@ export default function TaskSection({ section, openUpdateModal }) {
                     title={task.title}
                     description={task.description}
                     due={task.due}
+                    dueDateString={task.dueDateString}
                     created={task.created}
                     progress={task.progress}
                     priority={task.priority}
