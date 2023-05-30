@@ -101,8 +101,8 @@ export default function TaskCard({ id, title, description, due, created, progres
             <Card.Body>
             <Card.Title>
                 <Row>
-                    <Col sm={6} className='d-flex justify-content-start'>{title}</Col>
-                    <Col sm={6} className='d-flex justify-content-end'>
+                    <Col sm={10} className='d-flex justify-content-start'>{title}</Col>
+                    <Col sm={2} className='d-flex justify-content-end'>
                     <div style={{ maxWidth: '18px'}} onClick={editClicked}><img src={edit} alt='Red Flag' /></div>
                     </Col>
                 </Row>

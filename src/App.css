@@ -17,3 +17,10 @@
   font-size: .7rem;
   color: grey;
 }
+.archiveItem{
+  font-size: .7rem;
+  color: #767676;
+}
+.archiveSection{
+  font-weight: bold;
+}

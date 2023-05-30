@@ -3,16 +3,19 @@ import './App.css'
 import checkBox from './assets/list-check.png'
 import addPlus from './assets/add.png'
 import TaskSection from './components/TaskSection'
+import ArchiveSection from './components/ArchiveSection'
 import AddTaskModal from './components/AddTaskModal'
 import UpdateTaskModal from './components/UpdateTaskModal'
+import { useTasks } from './contexts/TasksContext'
 import { useState } from 'react'
 
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Badge } from 'react-bootstrap';
 
 function App() {
   const [showAddTaskModal, setShowAddTaskModal] = useState(false)
   const [showUpdateTaskModal, setShowUpdateTaskModal] = useState(false)
   const taskSections = ["To Do", "In Progress", "Completed"]
+  const { archivedTasks } = useTasks()
 
   return (
     <>
@@ -43,6 +46,25 @@ function App() {
                 <TaskSection key={mapSection} section={mapSection} openUpdateModal={() => setShowUpdateTaskModal(true)}/>
               ))}
             </Row>
+            {archivedTasks.length > 0 &&
+            <Row>
+              <Row><Col><Badge>Archive</Badge></Col></Row>
+              <Row>
+                  {archivedTasks.sort((t1, t2)=> t2.created - t1.created)
+                  .map(task => {
+                      return (
+                        <ArchiveSection
+                          key={task.id}
+                          id={task.id}
+                          title={task.title}
+                          description={task.description}
+                          created={task.created}
+                        />  
+                      )  
+                  })}
+              </Row>
+              </Row>
+            }
           </Col>
         </Row>
       </Container>

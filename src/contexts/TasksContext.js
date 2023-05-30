@@ -11,7 +11,7 @@ export function useTasks() {
 export const TasksProvider = ({ children }) => {    
     const [tasks, setTasks] = useLocalStorage("tasks", [])
     const [editTask, setEditTask] = useLocalStorage("edit", [])
-    const [archivedTask, setArchivedTask] = useLocalStorage("archive", [])
+    const [archivedTasks, setArchivedTask] = useLocalStorage("archive", [])
 
     const priorities = ["None", "Low", "Medium", "High"]
     const statuses = ["Created", "Started", "Completed"]
@@ -74,7 +74,7 @@ export const TasksProvider = ({ children }) => {
     }
 
     return (
-        <TasksContext.Provider value={{tasks, addTask, updateTask, archiveTask, setEditTask, priorities, statuses, editTask}}>
+        <TasksContext.Provider value={{tasks, addTask, updateTask, archiveTask, setEditTask, priorities, statuses, editTask, archivedTasks}}>
             { children }
         </TasksContext.Provider>
     )

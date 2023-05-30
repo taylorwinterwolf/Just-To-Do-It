@@ -21,8 +21,8 @@ const custStyle = {
 }
 
 export default function TaskSection({ section, openUpdateModal }) {
-
-  const sortBy = ["Priority", "Date", "Tag"]
+   const { tasks } = useTasks()
+  const sortBy = ["Priority", "Date"]
 
   const checkImg = (() => {
         switch (section) {
@@ -50,10 +50,18 @@ export default function TaskSection({ section, openUpdateModal }) {
     }
   })()
 
-  //console.log("Task Status is:", taskStatus)
+  function sortTasks(tasks, by="dateDEC") {
+    let sortedTasks = tasks
 
-  const { tasks } = useTasks()
-  
+    if (by === 'dateASC') {
+      sortedTasks = tasks.sort((t1, t2) => t1.created - t2.created)
+    } else if(by === 'dateDEC') {
+      sortedTasks = tasks.sort((t1, t2) => t2.created - t1.created)
+    }
+        
+    return sortedTasks
+  }
+
   return (
       <Col>
         <Badge className='w-100 backgroundGray mainTxt d-flex justify-content-start mb-3'>
@@ -76,7 +84,7 @@ export default function TaskSection({ section, openUpdateModal }) {
         </Badge>
         <Row>
           <Col>
-          {tasks.sort((t1, t2)=> t2.created - t1.created)
+          {sortTasks(tasks)
             .map(task => {
               if (task.status === taskStatus) {
                 return (
