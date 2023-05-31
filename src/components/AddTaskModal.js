@@ -45,7 +45,7 @@ export default function AddTaskModal({ show, handleClose }) {
                     </Form.Group>
                     <Form.Label>Due Date</Form.Label>
                     <Form.Group>
-                        <Form.Control type='date' min={currentDate} name='due' ref={dueDateRef}/>
+                        <Form.Control type='date' min={currentDate} name='due' ref={dueDateRef} required/>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="piority">
                         <Form.Label>Set Priority</Form.Label>

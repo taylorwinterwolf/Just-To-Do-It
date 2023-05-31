@@ -2,6 +2,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
 import checkBox from './assets/list-check.png'
 import addPlus from './assets/add.png'
+import minusBtn from './assets/minus.png'
+import generateBtn from './assets/list.png'
 import TaskSection from './components/TaskSection'
 import ArchiveSection from './components/ArchiveSection'
 import AddTaskModal from './components/AddTaskModal'
@@ -41,20 +43,20 @@ function App() {
               </Col>
             </Row>
             <Row>
-              <Col sm={12} onClick={() => setShowAddTaskModal(true)} style={{cursor: 'pointer'}}>
+              <Col sm={12} onClick={() => setShowAddTaskModal(true)} style={{cursor: 'pointer'}} className='navItem'>
                 <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={addPlus} alt="Add Task" className="w-100" /></div>
                 <p className='text-center'>Add New Task</p>
               </Col>
             </Row>
             <Row>
-              <Col sm={12} onClick={generateDummyData} style={{cursor: 'pointer'}}>
-                <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={addPlus} alt="Add Task" className="w-100" /></div>
+              <Col sm={12} onClick={generateDummyData} style={{cursor: 'pointer'}} className='navItem'>
+                <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={generateBtn} alt="Add Task" className="w-100" /></div>
                 <p className='text-center'>Auto Generate Tasks</p>
               </Col>
             </Row>
             <Row>
-              <Col sm={12} onClick={clearTasks} style={{cursor: 'pointer'}}>
-                <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={addPlus} alt="Add Task" className="w-100" /></div>
+              <Col sm={12} onClick={clearTasks} style={{cursor: 'pointer'}} className='navItem'>
+                <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={minusBtn} alt="Add Task" className="w-100" /></div>
                 <p className='text-center'>Clear All Tasks</p>
               </Col>
             </Row>

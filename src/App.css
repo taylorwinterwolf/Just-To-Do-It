@@ -24,3 +24,9 @@
 .archiveSection{
   font-weight: bold;
 }
+.navItem{
+  cursor: 'pointer' !important;
+  color: #707070;
+  font-size: .8rem;
+  font-weight: bold;
+}

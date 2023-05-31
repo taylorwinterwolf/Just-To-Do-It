@@ -1,10 +1,10 @@
 import { Form, Badge, Row, Col } from 'react-bootstrap'
 import TaskCard from './TaskCard'
-import grayToDo from '../assets/check-box-gray.png'
+import yellowToDo from '../assets/check-box-yellow.png'
 import blueToDo from '../assets/check-box-blue.png'
 import greenToDo from '../assets/check-box-green.png'
 import { useTasks } from '../contexts/TasksContext'
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 
 const custStyle = {
   mainTxt: {
@@ -23,20 +23,35 @@ const custStyle = {
 
 export default function TaskSection({ section, openUpdateModal }) {
   const { tasks, setTasks } = useTasks()
+  const prevTasksRef = useRef([])
   const sortByArray = ["High Priority", "Low Priority", "Newest", "Oldest"]
   const sortByObject = { "High Priority": "p-high", "Low Priority": "p-low", "Newest": "dec", "Oldest": "asc" }
   const sortRef = useRef()
+  
+  useEffect(() => {
+    console.log("Inside Use Effect: ", sortRef.current.value)
+    setTasks(prevTasks => {
+      // Check if the current count is different from the previous count
+      if (prevTasks !== prevTasksRef.current) {
+        console.log('Count has changed:', tasks);
+        sortTasks()
+      }
+      console.log("Previous Tasks: ", prevTasks)
+      prevTasksRef.current = prevTasks
+      return prevTasks;
+    })   
+  },[tasks])
 
   const checkImg = (() => {
         switch (section) {
             case 'To Do':
-                return grayToDo
-            case 'In Progress':
                 return blueToDo
+            case 'In Progress':
+                return yellowToDo
             case 'Completed':
                 return greenToDo
             default:
-                return grayToDo
+                return blueToDo
         }
   })()
   
@@ -90,8 +105,8 @@ export default function TaskSection({ section, openUpdateModal }) {
               <Form.Group controlId='filterID'>
               <Form.Select className='backgroundGray border-0' ref={sortRef} onChange={sortTasks}>
                   <option>Sort By</option>
-                {sortByArray.map(value => (
-                  <option key={value} value={sortByObject[value]}>{value}</option>
+                  {sortByArray.map(value => (
+                    <option key={value} value={sortByObject[value]}>{value}</option>
                   ))}
                 </Form.Select>
               </Form.Group>
