@@ -3,7 +3,7 @@ import { Modal, Form, Button } from 'react-bootstrap'
 import { useTasks } from '../contexts/TasksContext'
 
 export default function UpdateTaskModal({ show, handleClose }) {
-    const { statuses, priorities, editTask, updateTask, setEditTask } = useTasks()
+    const { statuses, priorities, editTask, updateTask, setEditTask} = useTasks()
     const titleRef = useRef()
     const descriptionRef = useRef()
     const dueDateRef = useRef()
@@ -70,8 +70,8 @@ export default function UpdateTaskModal({ show, handleClose }) {
                         <Form.Text>100 character limit</Form.Text>
                     </Form.Group>
                     <Form.Group className='mb-3' controlId='due'>
-                        <Form.Label>Due Date {editTask.due}</Form.Label>
-                        <Form.Control type='date' min={currentDate} defaultValue={editTask.due} name='due' ref={dueDateRef}/>
+                        <Form.Label>Due Date</Form.Label>
+                        <Form.Control type='date' min={currentDate} defaultValue={editTask.dueDateString} name='due' ref={dueDateRef} required/>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="piority" name="priority">
                         <Form.Label>Set Priority</Form.Label>

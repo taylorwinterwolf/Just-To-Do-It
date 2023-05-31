@@ -6,6 +6,7 @@ import TaskSection from './components/TaskSection'
 import ArchiveSection from './components/ArchiveSection'
 import AddTaskModal from './components/AddTaskModal'
 import UpdateTaskModal from './components/UpdateTaskModal'
+import dummyData from './components/dummyData'
 import { useTasks } from './contexts/TasksContext'
 import { useState } from 'react'
 
@@ -15,7 +16,19 @@ function App() {
   const [showAddTaskModal, setShowAddTaskModal] = useState(false)
   const [showUpdateTaskModal, setShowUpdateTaskModal] = useState(false)
   const taskSections = ["To Do", "In Progress", "Completed"]
-  const { archivedTasks } = useTasks()
+  const { archivedTasks, setTasks } = useTasks()
+
+  function generateDummyData() {
+    //console.log(JSON.stringify(dummyData()))
+    const dumData = dummyData()
+    setTasks(prevTasks => {
+      return [...prevTasks, ...dumData]
+    })
+  }
+
+  function clearTasks() {
+    setTasks([])
+  }
 
   return (
     <>
@@ -30,7 +43,19 @@ function App() {
             <Row>
               <Col sm={12} onClick={() => setShowAddTaskModal(true)} style={{cursor: 'pointer'}}>
                 <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={addPlus} alt="Add Task" className="w-100" /></div>
-                <p className='text-center'>New Task</p>
+                <p className='text-center'>Add New Task</p>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={12} onClick={generateDummyData} style={{cursor: 'pointer'}}>
+                <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={addPlus} alt="Add Task" className="w-100" /></div>
+                <p className='text-center'>Auto Generate Tasks</p>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={12} onClick={clearTasks} style={{cursor: 'pointer'}}>
+                <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={addPlus} alt="Add Task" className="w-100" /></div>
+                <p className='text-center'>Clear All Tasks</p>
               </Col>
             </Row>
           </Col>

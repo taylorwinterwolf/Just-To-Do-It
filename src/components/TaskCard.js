@@ -79,7 +79,7 @@ export default function TaskCard({ id, title, description, due, created, progres
     }
 
     function editClicked() {
-        const taskObj = { id, title, description, due, created, priority: priorityRef.current.value, status: statusRef.current.value }
+        const taskObj = { id, title, description, due, dueDateString, created, priority: priorityRef.current.value, status: statusRef.current.value }
         setEditTask(taskObj)
         openModal()
         //setShowUpdateTaskModal(true)
@@ -92,7 +92,11 @@ export default function TaskCard({ id, title, description, due, created, progres
 
     function dueDate(epoch){
         const date = new Date(epoch)
-        const convertedDate = date.toLocaleDateString('en-US')
+        const hour = date.getHours()
+        const twelveHour = hour > 12 ? hour - 12 : hour
+        //Add leading 0 using padStart() if the minutes returns 0
+        const minutes = date.getMinutes() !== 0 ? date.getMinutes() : `${date.getMinutes()}`.padStart(2, '0')
+        const convertedDate = `${twelveHour}:${minutes} ${date.toLocaleDateString('en-US')}`
         return convertedDate
     }
         

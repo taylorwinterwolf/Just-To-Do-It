@@ -16,17 +16,31 @@ export const TasksProvider = ({ children }) => {
     const priorities = ["None", "Low", "Medium", "High"]
     const statuses = ["Created", "Started", "Completed"]
 
+    function getPriorityNumber(priority) {
+        switch (priority) {
+            case 'None':
+                return 4
+            case 'Low':
+                return 3
+            case 'Medium':
+                return 2                
+            default:
+                return 1
+        }
+    }
+
     //TODO add task function
     function addTask({ title, description, due, dueDateString, priority}) {
         //All new tasks have a progress of 30
         const progress = 30
         const created = Date.now()
         const status = "Created"
+        const priorityNumber = getPriorityNumber(priority)
 
-        const values = { id: uuidV4(), title, description, due, dueDateString, priority, progress, created, status }
+        const values = { id: uuidV4(), title, description, due, dueDateString, priority, priorityNumber, progress, created, status }
             
         setTasks(prevTasks => {
-            return [...prevTasks, values]
+            return [values, ...prevTasks]
         })
         
     }
@@ -42,6 +56,7 @@ export const TasksProvider = ({ children }) => {
                     return 30
             }
         })()
+        const priorityNumber = getPriorityNumber(priority)
 
         //Destroy old entry
         setTasks(prevTasks => {
@@ -52,7 +67,7 @@ export const TasksProvider = ({ children }) => {
         //Add new entry if task is not simply getting deleted
         if (!destroy) {
             setTasks(prevTasks => {
-                return [...prevTasks, {id: uuidV4(), title, description, due, dueDateString, progress, priority, status, created}]
+                return [...prevTasks, {id: uuidV4(), title, description, due, dueDateString, progress, priority, priorityNumber, status, created}]
             })  
         } 
     }
@@ -74,9 +89,10 @@ export const TasksProvider = ({ children }) => {
     }
 
     return (
-        <TasksContext.Provider value={{tasks, addTask, updateTask, archiveTask, setEditTask, priorities, statuses, editTask, archivedTasks}}>
+        <TasksContext.Provider value={{tasks, setTasks, addTask, updateTask, archiveTask, setEditTask, priorities, statuses, editTask, archivedTasks}}>
             { children }
         </TasksContext.Provider>
+        
     )
 }
 

@@ -4,6 +4,7 @@ import grayToDo from '../assets/check-box-gray.png'
 import blueToDo from '../assets/check-box-blue.png'
 import greenToDo from '../assets/check-box-green.png'
 import { useTasks } from '../contexts/TasksContext'
+import { useRef } from 'react'
 
 const custStyle = {
   mainTxt: {
@@ -21,8 +22,10 @@ const custStyle = {
 }
 
 export default function TaskSection({ section, openUpdateModal }) {
-   const { tasks } = useTasks()
-  const sortBy = ["Priority", "Date"]
+  const { tasks, setTasks } = useTasks()
+  const sortByArray = ["High Priority", "Low Priority", "Newest", "Oldest"]
+  const sortByObject = { "High Priority": "p-high", "Low Priority": "p-low", "Newest": "dec", "Oldest": "asc" }
+  const sortRef = useRef()
 
   const checkImg = (() => {
         switch (section) {
@@ -50,16 +53,29 @@ export default function TaskSection({ section, openUpdateModal }) {
     }
   })()
 
-  function sortTasks(tasks, by="dateDEC") {
-    let sortedTasks = tasks
+  function sortTasks() {
+    console.log("Sort Tasks by: ", sortRef.current.value, "In the ", taskStatus, "section")
+    const sortBy = sortRef.current.value
+    const filteredTasks = tasks.filter(task => task.status === taskStatus)
+    const unSortedTasks = tasks.filter(task => task.status !== taskStatus)
 
-    if (by === 'dateASC') {
-      sortedTasks = tasks.sort((t1, t2) => t1.created - t2.created)
-    } else if(by === 'dateDEC') {
-      sortedTasks = tasks.sort((t1, t2) => t2.created - t1.created)
+    let sortedTasks = filteredTasks
+
+    if (sortBy === 'p-high') {
+      sortedTasks = filteredTasks.sort((task1, task2) => task1.priorityNumber - task2.priorityNumber)
+    } else if (sortBy === 'p-low') {
+      sortedTasks = filteredTasks.sort((task1, task2) => task2.priorityNumber - task1.priorityNumber)
+    } else if (sortBy === 'asc') {
+      sortedTasks = filteredTasks.sort((task1, task2) => task1.created - task2.created)
+    } else {
+      sortedTasks = filteredTasks.sort((task1, task2) => task2.created - task1.created)
     }
-        
-    return sortedTasks
+
+    const combinedSections = [...sortedTasks, ...unSortedTasks]
+    //console.log(combinedSections)
+    //console.log(unSortedTasks)
+
+    setTasks(combinedSections)   
   }
 
   return (
@@ -72,10 +88,10 @@ export default function TaskSection({ section, openUpdateModal }) {
           <Col className='d-flex justify-content-end' sm={6}>
             <Form className='justify-content-end'>
               <Form.Group controlId='filterID'>
-                <Form.Select className='backgroundGray border-0'>
+              <Form.Select className='backgroundGray border-0' ref={sortRef} onChange={sortTasks}>
                   <option>Sort By</option>
-                  {sortBy.map(value => (
-                    <option key={value} value={value}>{value}</option>
+                {sortByArray.map(value => (
+                  <option key={value} value={sortByObject[value]}>{value}</option>
                   ))}
                 </Form.Select>
               </Form.Group>
@@ -84,27 +100,23 @@ export default function TaskSection({ section, openUpdateModal }) {
         </Badge>
         <Row>
           <Col>
-          {sortTasks(tasks)
-            .map(task => {
-              if (task.status === taskStatus) {
-                return (
-                  <TaskCard
-                    key={task.id}
-                    id={task.id}
-                    title={task.title}
-                    description={task.description}
-                    due={task.due}
-                    dueDateString={task.dueDateString}
-                    created={task.created}
-                    progress={task.progress}
-                    priority={task.priority}
-                    status={task.status}
-                    openModal={openUpdateModal}
-                  />  
-                )  
-              }
-              return null
-            })}
+          {tasks.filter(task => task.status === taskStatus).map(task => {
+              return (
+                <TaskCard
+                  key={task.id}
+                  id={task.id}
+                  title={task.title}
+                  description={task.description}
+                  due={task.due}
+                  dueDateString={task.dueDateString}
+                  created={task.created}
+                  progress={task.progress}
+                  priority={task.priority}
+                  status={task.status}
+                  openModal={openUpdateModal}
+                />  
+              )  
+          })}
           </Col>
         </Row>
       </Col>
