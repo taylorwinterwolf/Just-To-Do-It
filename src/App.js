@@ -4,11 +4,13 @@ import checkBox from './assets/list-check.png'
 import addPlus from './assets/add.png'
 import minusBtn from './assets/minus.png'
 import generateBtn from './assets/list.png'
-import TaskSection from './components/TaskSection'
+import TaskSectionToDo from './components/TaskSectionToDo'
+import TaskSectionInProgress from './components/TaskSectionInProgress'
+import TaskSectionCompleted from './components/TaskSectionCompleted'
 import ArchiveSection from './components/ArchiveSection'
 import AddTaskModal from './components/AddTaskModal'
 import UpdateTaskModal from './components/UpdateTaskModal'
-import dummyData from './components/dummyData'
+
 import { useTasks } from './contexts/TasksContext'
 import { useState } from 'react'
 
@@ -17,20 +19,7 @@ import { Container, Row, Col, Badge } from 'react-bootstrap';
 function App() {
   const [showAddTaskModal, setShowAddTaskModal] = useState(false)
   const [showUpdateTaskModal, setShowUpdateTaskModal] = useState(false)
-  const taskSections = ["To Do", "In Progress", "Completed"]
-  const { archivedTasks, setTasks } = useTasks()
-
-  function generateDummyData() {
-    //console.log(JSON.stringify(dummyData()))
-    const dumData = dummyData()
-    setTasks(prevTasks => {
-      return [...prevTasks, ...dumData]
-    })
-  }
-
-  function clearTasks() {
-    setTasks([])
-  }
+  const { archivedTasks, generateDummyData, clearTasks } = useTasks()
 
   return (
     <>
@@ -69,9 +58,9 @@ function App() {
               </div>
             </Row>
             <Row>
-              {taskSections.map(mapSection => (
-                <TaskSection key={mapSection} section={mapSection} openUpdateModal={() => setShowUpdateTaskModal(true)}/>
-              ))}
+              <TaskSectionToDo section="Created" openUpdateModal={() => setShowUpdateTaskModal(true)} />
+              <TaskSectionInProgress section="Started" openUpdateModal={() => setShowUpdateTaskModal(true)}/>
+              <TaskSectionCompleted section="Completed" openUpdateModal={() => setShowUpdateTaskModal(true)}/>
             </Row>
             {archivedTasks.length > 0 &&
             <Row>

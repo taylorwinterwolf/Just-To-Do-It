@@ -1,6 +1,7 @@
 import { createContext, useContext } from "react"
 import { v4 as uuidV4 } from "uuid"
 import useLocalStorage from "../hooks/UseLocalStorage"
+import dummyData from '../components/dummyData'
 
 const TasksContext = createContext()
 
@@ -30,7 +31,8 @@ export const TasksProvider = ({ children }) => {
     }
 
     //TODO add task function
-    function addTask({ title, description, due, dueDateString, priority}) {
+    function addTask({ title, description, due, dueDateString, priority }) {
+
         //All new tasks have a progress of 30
         const progress = 30
         const created = Date.now()
@@ -46,6 +48,7 @@ export const TasksProvider = ({ children }) => {
     }
 
     function updateTask({ id, title, description, due, dueDateString, priority, status, created, destroy }) {
+
         const progress = (() => {
             switch (status) {
                 case 'Started':
@@ -88,8 +91,42 @@ export const TasksProvider = ({ children }) => {
         
     }
 
+    function sortTasksBy(sortBy, taskSection) {
+      const filteredTasks = tasks.filter(task => task.status === taskSection)
+      const unSortedTasks = tasks.filter(task => task.status !== taskSection)
+
+      let sortedTasks = filteredTasks
+
+      if (sortBy === 'p-high') {
+        sortedTasks = [...filteredTasks].sort((task1, task2) => task1.priorityNumber - task2.priorityNumber)
+      } else if (sortBy === 'p-low') {
+        sortedTasks = [...filteredTasks].sort((task1, task2) => task2.priorityNumber - task1.priorityNumber)
+      } else if (sortBy === 'asc') {
+        sortedTasks = [...filteredTasks].sort((task1, task2) => task1.created - task2.created)
+      } else {
+        sortedTasks = [...filteredTasks].sort((task1, task2) => task2.created - task1.created)
+      }
+
+      const combinedSections = [...sortedTasks, ...unSortedTasks]
+
+      console.log("SORTING TASKS BY: ", sortBy, "IN THE the ", taskSection, "SECTION")
+      setTasks(combinedSections)                     
+    }
+
+    function generateDummyData() {
+        //console.log(JSON.stringify(dummyData()))
+        const dumData = dummyData()
+        setTasks(prevTasks => {
+        return [...prevTasks, ...dumData]
+        })
+    }
+
+    function clearTasks() {
+        setTasks([])
+    }
+
     return (
-        <TasksContext.Provider value={{tasks, setTasks, addTask, updateTask, archiveTask, setEditTask, priorities, statuses, editTask, archivedTasks}}>
+        <TasksContext.Provider value={{addTask, updateTask, archiveTask, sortTasksBy, generateDummyData, clearTasks, tasks, setTasks, setEditTask, priorities, statuses, editTask, archivedTasks}}>
             { children }
         </TasksContext.Provider>
         
