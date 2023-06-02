@@ -71,10 +71,8 @@ export default function TaskCard({ id, title, description, due, created, progres
     }
     })()
 
-    function handleChange(e) {
-        e.preventDefault()
+    function handleChange() {
         const taskObj = { id, title, description, due, created, priority: priorityRef.current.value, status: statusRef.current.value }
-        //console.log(JSON.stringify(valObj))
         updateTask(taskObj)        
     }
 
@@ -82,7 +80,6 @@ export default function TaskCard({ id, title, description, due, created, progres
         const taskObj = { id, title, description, due, dueDateString, created, priority: priorityRef.current.value, status: statusRef.current.value }
         setEditTask(taskObj)
         openModal()
-        //setShowUpdateTaskModal(true)
     }
 
     function archivedClicked() {

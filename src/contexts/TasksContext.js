@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import { v4 as uuidV4 } from "uuid"
 import useLocalStorage from "../hooks/UseLocalStorage"
 import dummyData from '../components/dummyData'
@@ -10,9 +10,24 @@ export function useTasks() {
 }
 
 export const TasksProvider = ({ children }) => {    
+    const [flagUpdate, setFlagUpdate] = useState(false)
     const [tasks, setTasks] = useLocalStorage("tasks", [])
     const [editTask, setEditTask] = useLocalStorage("edit", [])
     const [archivedTasks, setArchivedTask] = useLocalStorage("archive", [])
+    const [sortBySelectedValue, setSortBySelectedValue] = useLocalStorage("sorting", []);
+
+    useEffect(() => {
+        if (flagUpdate) {
+            console.log("USE EFFECT TRIGGERED")
+            sortBySelectedValue.forEach(item => {                
+                sortTasksBy(item.sortBy, item.section)
+            })
+            setFlagUpdate(false)    
+        }
+    }, [flagUpdate])
+
+    console.log("VALUE OF flagUpdate: ", flagUpdate)
+    console.log("VALUE OF seletedValue: ", sortBySelectedValue)
 
     const priorities = ["None", "Low", "Medium", "High"]
     const statuses = ["Created", "Started", "Completed"]
@@ -45,10 +60,10 @@ export const TasksProvider = ({ children }) => {
             return [values, ...prevTasks]
         })
         
+        setFlagUpdate(true)
     }
 
     function updateTask({ id, title, description, due, dueDateString, priority, status, created, destroy }) {
-
         const progress = (() => {
             switch (status) {
                 case 'Started':
@@ -72,7 +87,9 @@ export const TasksProvider = ({ children }) => {
             setTasks(prevTasks => {
                 return [...prevTasks, {id: uuidV4(), title, description, due, dueDateString, progress, priority, priorityNumber, status, created}]
             })  
-        } 
+        }
+
+        setFlagUpdate(true)
     }
 
     function archiveTask({ id, title, description, due, dueDateString, priority, status, progress, created }) {
@@ -92,33 +109,39 @@ export const TasksProvider = ({ children }) => {
     }
 
     function sortTasksBy(sortBy, taskSection) {
-      const filteredTasks = tasks.filter(task => task.status === taskSection)
-      const unSortedTasks = tasks.filter(task => task.status !== taskSection)
+        setTasks(prevTasks => {
+            console.log("SORTING TASKS BY: ", sortBy, "IN THE the ", taskSection, "SECTION")
+            console.log("TASKS INSIDE SORT FUNCTION", prevTasks)  
+            const filteredTasks = prevTasks.filter(task => task.status === taskSection)
+            const unSortedTasks = prevTasks.filter(task => task.status !== taskSection)
 
-      let sortedTasks = filteredTasks
+            let sortedTasks = filteredTasks
 
-      if (sortBy === 'p-high') {
-        sortedTasks = [...filteredTasks].sort((task1, task2) => task1.priorityNumber - task2.priorityNumber)
-      } else if (sortBy === 'p-low') {
-        sortedTasks = [...filteredTasks].sort((task1, task2) => task2.priorityNumber - task1.priorityNumber)
-      } else if (sortBy === 'asc') {
-        sortedTasks = [...filteredTasks].sort((task1, task2) => task1.created - task2.created)
-      } else {
-        sortedTasks = [...filteredTasks].sort((task1, task2) => task2.created - task1.created)
-      }
+            if (sortBy === 'p-high') {
+            sortedTasks = [...filteredTasks].sort((task1, task2) => task1.priorityNumber - task2.priorityNumber)
+            } else if (sortBy === 'p-low') {
+            sortedTasks = [...filteredTasks].sort((task1, task2) => task2.priorityNumber - task1.priorityNumber)
+            } else if (sortBy === 'asc') {
+            sortedTasks = [...filteredTasks].sort((task1, task2) => task1.created - task2.created)
+            } else {
+            sortedTasks = [...filteredTasks].sort((task1, task2) => task2.created - task1.created)
+            }
 
-      const combinedSections = [...sortedTasks, ...unSortedTasks]
+            const combinedSections = [...sortedTasks, ...unSortedTasks]
+            console.log("SORTED TASKS: ", combinedSections)
 
-      console.log("SORTING TASKS BY: ", sortBy, "IN THE the ", taskSection, "SECTION")
-      setTasks(combinedSections)                     
+            return combinedSections;
+        });                     
     }
 
     function generateDummyData() {
-        //console.log(JSON.stringify(dummyData()))
+        console.log("GENERATING DUMMY DATA")
         const dumData = dummyData()
         setTasks(prevTasks => {
-        return [...prevTasks, ...dumData]
-        })
+            return [...prevTasks, ...dumData]
+        }) 
+        
+        setFlagUpdate(true)
     }
 
     function clearTasks() {
@@ -126,7 +149,7 @@ export const TasksProvider = ({ children }) => {
     }
 
     return (
-        <TasksContext.Provider value={{addTask, updateTask, archiveTask, sortTasksBy, generateDummyData, clearTasks, tasks, setTasks, setEditTask, priorities, statuses, editTask, archivedTasks}}>
+        <TasksContext.Provider value={{addTask, updateTask, archiveTask, sortTasksBy, generateDummyData, clearTasks, tasks, setTasks, setEditTask, priorities, statuses, editTask, archivedTasks, sortBySelectedValue, setSortBySelectedValue}}>
             { children }
         </TasksContext.Provider>
         

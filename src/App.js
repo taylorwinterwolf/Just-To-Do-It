@@ -4,9 +4,7 @@ import checkBox from './assets/list-check.png'
 import addPlus from './assets/add.png'
 import minusBtn from './assets/minus.png'
 import generateBtn from './assets/list.png'
-import TaskSectionToDo from './components/TaskSectionToDo'
-import TaskSectionInProgress from './components/TaskSectionInProgress'
-import TaskSectionCompleted from './components/TaskSectionCompleted'
+import TaskSections from './components/TaskSections'
 import ArchiveSection from './components/ArchiveSection'
 import AddTaskModal from './components/AddTaskModal'
 import UpdateTaskModal from './components/UpdateTaskModal'
@@ -20,6 +18,7 @@ function App() {
   const [showAddTaskModal, setShowAddTaskModal] = useState(false)
   const [showUpdateTaskModal, setShowUpdateTaskModal] = useState(false)
   const { archivedTasks, generateDummyData, clearTasks } = useTasks()
+  const taskSections = ["To Do", "In Progress", "Completed"]
 
   return (
     <>
@@ -58,9 +57,9 @@ function App() {
               </div>
             </Row>
             <Row>
-              <TaskSectionToDo section="Created" openUpdateModal={() => setShowUpdateTaskModal(true)} />
-              <TaskSectionInProgress section="Started" openUpdateModal={() => setShowUpdateTaskModal(true)}/>
-              <TaskSectionCompleted section="Completed" openUpdateModal={() => setShowUpdateTaskModal(true)}/>
+              {taskSections.map(mapSection => (
+                <TaskSections key={mapSection} section={mapSection} openUpdateModal={() => setShowUpdateTaskModal(true)}/>
+              ))}
             </Row>
             {archivedTasks.length > 0 &&
             <Row>
