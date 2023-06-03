@@ -17,8 +17,12 @@ import { Container, Row, Col, Badge } from 'react-bootstrap';
 function App() {
   const [showAddTaskModal, setShowAddTaskModal] = useState(false)
   const [showUpdateTaskModal, setShowUpdateTaskModal] = useState(false)
-  const { archivedTasks, generateDummyData, clearTasks } = useTasks()
+  const { archivedTasks, generateDummyData, clearTasks, setArchivedTask } = useTasks()
   const taskSections = ["To Do", "In Progress", "Completed"]
+
+  function clearArchive(){
+    setArchivedTask([])
+  }
 
   return (
     <>
@@ -63,7 +67,10 @@ function App() {
             </Row>
             {archivedTasks.length > 0 &&
             <Row>
-              <Row><Col><Badge>Archive</Badge></Col></Row>
+                <Row>
+                  <Col lg={1}><Badge>Archive</Badge></Col>
+                  <Col lg={2}><Badge bg="secondary" onClick={clearArchive} style={{cursor: 'pointer'}}>Clear Archive</Badge></Col>
+                </Row>
               <Row>
                   {archivedTasks.sort((t1, t2)=> t2.created - t1.created)
                   .map(task => {

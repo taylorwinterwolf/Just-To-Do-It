@@ -22,9 +22,14 @@ const custStyle = {
 }
 
 export default function TaskSections({ section, openUpdateModal }) {
-  const { tasks, sortTasksBy, setSortBySelectedValue, sortBySelectedValue } = useTasks()
-  const sortByArray = ["Sort By","High Priority", "Low Priority", "Newest", "Oldest"]
-  const sortByObject = { "High Priority": "p-high", "Low Priority": "p-low", "Newest": "dec", "Oldest": "asc", "Sort By": "default" }
+    const { tasks, sortTasksBy, setSortBySelectedValue, sortBySelectedValue } = useTasks()
+    const sortByObject = { "p-high":"High Priority", "p-low":"Low Priority", "dec":"Newest", "asc":"Oldest" }
+    const sortByKey = [
+        { priority: "High Priority", priorityValue: "p-high" },
+        { priority: "Low Priority", priorityValue: "p-low" },
+        { priority: "Newest", priorityValue: "dec" },
+        { priority: "Oldest", priorityValue: "asc" }
+    ]
   const sortRef = useRef()
 
   const checkImg = (() => {
@@ -52,17 +57,21 @@ export default function TaskSections({ section, openUpdateModal }) {
             return "Created"
     }
   })()
+    
+    const sortSelected = sortBySelectedValue.find(sortItem => sortItem.section === taskSection)
+    //console.log("sortSelected VAR: ", sortSelected)
 
   function sortTasks() {
     sortTasksBy(sortRef.current.value, taskSection)
       
     if (sortBySelectedValue.length === 0 || sortBySelectedValue[0] === null) {  
-      setSortBySelectedValue([{ section: taskSection, sortBy: sortRef.current.value, iterations: 1 }])
+      setSortBySelectedValue([{ section: taskSection, sortBy: sortRef.current.value }])
     } else {
       setSortBySelectedValue(prevSelectedValue => {
         //Remove value for this section
-        const filteredValue = prevSelectedValue.filter(item => item.section !== taskSection);
-        const updatedValue = [...filteredValue, { section: taskSection, sortBy: sortRef.current.value, iterations: 1 }];
+          const filteredValue = prevSelectedValue.filter(item => item.section !== taskSection);
+        //Replace with new value for this section
+        const updatedValue = [...filteredValue, { section: taskSection, sortBy: sortRef.current.value }];
         return updatedValue;
       })  
     }    
@@ -78,10 +87,17 @@ export default function TaskSections({ section, openUpdateModal }) {
           <Col className='d-flex justify-content-end' sm={6}>
             <Form className='justify-content-end'>
               <Form.Group controlId='filterID'>
-              <Form.Select className='backgroundGray border-0' ref={sortRef} onChange={sortTasks} defaultValue="Top Spot">
-                  {sortByArray.map(value => (
-                    <option key={value} value={sortByObject[value]}>{value}</option>
-                  ))}
+                <Form.Select className='backgroundGray border-0' ref={sortRef} onChange={sortTasks} defaultValue="Top Spot">
+                    {sortSelected.sortBy === 'default' ? (
+                        <option value = "default">Sort By</option>
+                    ) : (
+                        <option value={sortByObject[sortSelected.sortBy]}>{sortByObject[sortSelected.sortBy]}</option>
+                    )}
+                    {sortByKey.map(item => (
+                        item.priorityValue !== sortSelected.sortBy && (
+                            <option key={item.priorityValue} value={item.priorityValue}>{item.priority}</option>
+                        )
+                    ))}
                 </Form.Select>
               </Form.Group>
             </Form>
