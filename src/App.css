@@ -4,11 +4,6 @@
   font-size: 2.5rem;
   color: #4B9CB3;
 }
-@media (max-width: 333px) {
-  .headerFont {
-    font-size: 2rem;
-  }
-}
 .backgroundGray{
   background-color: #E3E3E3 !important;  
 }
@@ -36,4 +31,21 @@
 }
 .navbar-nav {
   justify-content: center;
+}
+#navSideBar{
+  height: 100vh !important;
+}
+@media (max-width: 767px) {
+  #navSideBar {
+    height: 309px !important;
+  }
+}
+@media (max-width: 333px) {
+  .headerFont {
+    font-size: 2rem;
+  }
+
+  #checkBoxLogo {
+    padding-top: '10px' !important;
+  }
 }

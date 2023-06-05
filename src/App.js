@@ -27,7 +27,7 @@ function App() {
   return (
     <>
       <Container className="vh-100">
-        <Row direction='horizontal' className="vh-100">
+        <Row direction='horizontal' id="navSideBar">
           
           <Col direction='vertical' style={{ backgroundColor: '#E3E3E3' }} sm={12} md={2}>
             <Navbar expand="md" className='container-fluid justify-content-center'>
@@ -65,8 +65,8 @@ function App() {
           <Col direction='horizontal' sm={12} md={10}>
             <Row>
               <div className='d-flex justify-content-center'>
-                <p className='headerFont p-0 me-2'>JUST TO DO IT</p>
-                <div style={{ maxWidth: '33px', paddingTop: '15px' }}><img src={checkBox} alt="List Check" className="w-100" /></div>
+                <p className='headerFont p-0 mb-0 me-2'>JUST TO DO IT</p>
+                <div style={{ maxWidth: '33px'}} className='mt-auto mb-auto'><img src={checkBox} alt="List Check" className="w-100" /></div>
               </div>
             </Row>
             <Row>
