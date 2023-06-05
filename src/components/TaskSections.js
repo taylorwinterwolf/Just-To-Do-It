@@ -78,7 +78,7 @@ export default function TaskSections({ section, openUpdateModal }) {
   }
     
   return (
-      <Col>
+    <Col sm={12} md={6} lg={4}>
         <Badge className='w-100 backgroundGray mainTxt d-flex justify-content-start mb-3'>
           <Col className='d-flex justify-content-start' sm={6}>
           <div style={custStyle.toDoImgWrap}><img src={checkImg} alt="To Do Gray" className="w-100" /> </div>                  

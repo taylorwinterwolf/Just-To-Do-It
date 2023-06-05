@@ -12,7 +12,7 @@ import UpdateTaskModal from './components/UpdateTaskModal'
 import { useTasks } from './contexts/TasksContext'
 import { useState } from 'react'
 
-import { Container, Row, Col, Badge } from 'react-bootstrap';
+import { Container, Row, Col, Badge, Navbar, Nav, NavItem } from 'react-bootstrap';
 
 function App() {
   const [showAddTaskModal, setShowAddTaskModal] = useState(false)
@@ -28,32 +28,41 @@ function App() {
     <>
       <Container className="vh-100">
         <Row direction='horizontal' className="vh-100">
-          <Col direction='vertical' style={{ backgroundColor: '#E3E3E3' }} sm={3} md={2}>
-            <Row className='mb-3'>
-              <Col sm={12}>
-                <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={checkBox} alt="List Check" className="w-100" /></div>
-              </Col>
-            </Row>
-            <Row>
-              <Col sm={12} onClick={() => setShowAddTaskModal(true)} style={{cursor: 'pointer'}} className='navItem'>
-                <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={addPlus} alt="Add Task" className="w-100" /></div>
-                <p className='text-center'>Add New Task</p>
-              </Col>
-            </Row>
-            <Row>
-              <Col sm={12} onClick={generateDummyData} style={{cursor: 'pointer'}} className='navItem'>
-                <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={generateBtn} alt="Add Task" className="w-100" /></div>
-                <p className='text-center'>Auto Generate Tasks</p>
-              </Col>
-            </Row>
-            <Row>
-              <Col sm={12} onClick={clearTasks} style={{cursor: 'pointer'}} className='navItem'>
-                <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={minusBtn} alt="Add Task" className="w-100" /></div>
-                <p className='text-center'>Clear All Tasks</p>
-              </Col>
-            </Row>
+          
+          <Col direction='vertical' style={{ backgroundColor: '#E3E3E3' }} sm={12} md={2}>
+            <Navbar expand="md" className='container-fluid justify-content-center'>
+
+              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              <Navbar.Collapse id="basic-navbar-nav" className='flex-grow-0'>
+                <Nav className="flex-column">
+                
+                  <NavItem>
+                    <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={checkBox} alt="List Check" className="w-100" /></div>
+                  </NavItem>
+                
+                  <Nav.Link onClick={() => setShowAddTaskModal(true)} style={{cursor: 'pointer'}} className='navItem'>
+                    <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={addPlus} alt="Add Task" className="w-100" /></div>
+                    <p className='text-center'>Add New Task</p>
+                  </Nav.Link>
+                
+                  <Nav.Link onClick={generateDummyData} style={{cursor: 'pointer'}} className='navItem'>
+                    <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={generateBtn} alt="Add Task" className="w-100" /></div>
+                    <p className='text-center'>Auto Generate Tasks</p>
+                  </Nav.Link>
+                
+                  <Nav.Link onClick={clearTasks} style={{cursor: 'pointer'}} className='navItem'>
+                    <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={minusBtn} alt="Add Task" className="w-100" /></div>
+                    <p className='text-center'>Clear All Tasks</p>
+                  </Nav.Link>
+                  
+                </Nav>
+              </Navbar.Collapse>
+             
+
+            </Navbar>
           </Col>
-          <Col direction='horizontal' sm={9} md={10}>
+
+          <Col direction='horizontal' sm={12} md={10}>
             <Row>
               <div className='d-flex justify-content-center'>
                 <p className='headerFont p-0 me-2'>JUST TO DO IT</p>

@@ -4,7 +4,11 @@
   font-size: 2.5rem;
   color: #4B9CB3;
 }
-
+@media (max-width: 333px) {
+  .headerFont {
+    font-size: 2rem;
+  }
+}
 .backgroundGray{
   background-color: #E3E3E3 !important;  
 }
@@ -29,4 +33,7 @@
   color: #707070;
   font-size: .8rem;
   font-weight: bold;
+}
+.navbar-nav {
+  justify-content: center;
 }
