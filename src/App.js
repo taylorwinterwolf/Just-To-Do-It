@@ -37,19 +37,19 @@ function App() {
                   <NavItem>
                     <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={checkBox} alt="List Check" className="w-100" /></div>
                   </NavItem>
-                  <Nav.Link onClick={() => setShowAddTaskModal(true)} style={{cursor: 'pointer'}} className='navItem' eventKey="/">
+                  <Nav.Link onClick={() => setShowAddTaskModal(true)} style={{cursor: 'pointer'}} className='navItem' eventKey="/AddTask">
                     <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={addPlus} alt="Add Task" className="w-100" /></div>
                     <p className='text-center'>Add New Task</p>
                   </Nav.Link>
-                  <Nav.Link onClick={generateDummyData} style={{cursor: 'pointer'}} className='navItem' eventKey="/">
+                  <Nav.Link onClick={generateDummyData} style={{cursor: 'pointer'}} className='navItem' eventKey="/AutoGenerate">
                     <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={generateBtn} alt="Auto generate tasks" className="w-100" /></div>
                     <p className='text-center'>Auto Generate Tasks</p>
                   </Nav.Link>
-                  <Nav.Link onClick={clearTasks} style={{cursor: 'pointer'}} className='navItem' eventKey="/">
+                  <Nav.Link onClick={clearTasks} style={{cursor: 'pointer'}} className='navItem' eventKey="/ClearTasks">
                     <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={minusBtn} alt="Clear Tasks" className="w-100" /></div>
                     <p className='text-center'>Clear All Tasks</p>
                   </Nav.Link>
-                  <Nav.Link style={{cursor: 'pointer'}} className='navItem' eventKey="/" href="https://github.com/taylorwinterwolf/justtodoit" target="_blank">
+                  <Nav.Link style={{cursor: 'pointer'}} className='navItem' eventKey="/GitHub" href="https://github.com/taylorwinterwolf/justtodoit" target="_blank">
                     <div style={{ maxWidth: '33px', paddingTop: '15px' }} className='m-auto'><img src={githubBtn} alt="GitHub Repo" className="w-100" /></div>
                     <p className='text-center'>GitHub Repo</p>
                   </Nav.Link>
