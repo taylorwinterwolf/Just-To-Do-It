@@ -19,7 +19,7 @@ export const TasksProvider = ({ children }) => {
                 { section: "Started", sortBy: "default" },
                 { section: "Created", sortBy: "default" }
             ])
-
+            
     useEffect(() => {
         if (flagUpdate) {
             //console.log("USE EFFECT TRIGGERED")

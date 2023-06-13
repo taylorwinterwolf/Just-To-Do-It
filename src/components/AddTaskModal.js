@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { Modal, Form, Button, Row, Col } from 'react-bootstrap'
+import { Modal, Form, Button } from 'react-bootstrap'
 import { useTasks } from '../contexts/TasksContext'
 
 export default function AddTaskModal({ show, handleClose }) {
