@@ -6,5 +6,5 @@ Just To Do It is a user-friendly task managing app built using React JS. With it
 
 ## App features
 
-- (**Task Creation**)
+- **Task Creation**
   - Add new tasks by clicking Add New Task button
