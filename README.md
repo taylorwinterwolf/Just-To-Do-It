@@ -1,6 +1,6 @@
 # Just To Do It 
 
-This site was built using React JS and is hosted with GitHub Pages [View Site](https://taylorwinterwolf.github.io/) 
+This site was built using React JS and is hosted with GitHub Pages [View Site](https://wolf-just-to-do-it.web.app/) 
 
 Just To Do It is a user-friendly task managing app built using React JS. This app was created to display competency with React JS. With its intuitive interface and sleek design, it offers a simple and efficient solution for organizing and tracking your daily tasks. The app allows you to create and prioritize tasks, set due dates, and mark them as completed when finished. You can easily add new tasks, edit existing ones, and delete tasks that are no longer relevant. With its responsive design, the app works seamlessly across different devices, allowing you to access and update your tasks on the go.
 
@@ -31,24 +31,24 @@ Just To Do It is a user-friendly task managing app built using React JS. This ap
 
 ### Desktop
 
-![Image](https://taylortay.com/screengrabs/fullscreen.jpg)
+![Image](public/screengrabs/fullscreen.jpg)
 
 ### Add Task Modal
 
-![Image](https://taylortay.com/screengrabs/addTask.jpg)
+![Image](public/screengrabs/addTask.jpg)
 
 ### Edit Task Modal
 
-![Image](https://taylortay.com/screengrabs/EditTask.jpg)
+![Image](public/screengrabs/EditTask.jpg)
 
 ### Sorting Dropdown
 
-![Image](https://taylortay.com/screengrabs/sorting.jpg)
+![Image](public/screengrabs/sorting.jpg)
 
 ### Mobile
 
-![Image](https://taylortay.com/screengrabs/mobile.jpg)
+![Image](public/screengrabs/mobile.jpg)
 
 ### Mobile Menu
 
-![Image](https://taylortay.com/screengrabs/mobileOpenMenu.jpg)
+![Image](public/screengrabs/mobileOpenMenu.jpg)
