@@ -11,7 +11,7 @@ export function useTasks() {
 
 export const TasksProvider = ({ children }) => {    
     const [flagUpdate, setFlagUpdate] = useState(false)
-    const [tasks, setTasks] = useLocalStorage("tasks", [])
+    const [tasks, setTasks] = useLocalStorage("tasks", dummyData)
     const [editTask, setEditTask] = useLocalStorage("edit", [])
     const [archivedTasks, setArchivedTask] = useLocalStorage("archive", [])
     const [sortBySelectedValue, setSortBySelectedValue] = useLocalStorage("sorting", [
@@ -54,7 +54,7 @@ export const TasksProvider = ({ children }) => {
 
         //All new tasks have a progress of 30
         const progress = 30
-        const created = Date.now()
+        const created = getDate()
         const status = "Created"
         const priorityNumber = getPriorityNumber(priority)
 
@@ -65,6 +65,14 @@ export const TasksProvider = ({ children }) => {
         })
 
         setFlagUpdate(true)
+    }
+
+    function getDate() {
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${month}/${day}/${year}`;
     }
 
     function updateTask({ id, title, description, due, dueDateString, priority, status, created, destroy }) {

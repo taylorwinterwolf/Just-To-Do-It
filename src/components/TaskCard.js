@@ -86,16 +86,6 @@ export default function TaskCard({ id, title, description, due, created, progres
         const taskObj = { id, title, description, due, dueDateString, created, priority, status, progress }
         archiveTask(taskObj)    
     }
-
-    function convertDate(epoch){
-        const date = new Date(epoch)
-        const hour = date.getHours()
-        const twelveHour = hour > 12 ? hour - 12 : hour
-        //Add leading 0 using padStart() if the minutes returns 0
-        const minutes = date.getMinutes() !== 0 ? date.getMinutes() : `${date.getMinutes()}`.padStart(2, '0')
-        const convertedDate = `${twelveHour}:${minutes} ${date.toLocaleDateString('en-US')}`
-        return convertedDate
-    }
         
     return (
         <Card style={custStyle.mainTxt} className='mb-3'>
@@ -110,7 +100,7 @@ export default function TaskCard({ id, title, description, due, created, progres
             </Card.Title>
                 <Card.Text className='mb-1'>{description}</Card.Text>
                 <Row className='mb-2 mt-2'>
-                    <Col sm={6}><Card.Text style={custStyle.dates}>Created: {convertDate(created)}</Card.Text></Col>
+                    <Col sm={6}><Card.Text style={custStyle.dates}>Created: {created}</Card.Text></Col>
                     <Col sm={6}><Card.Text style={custStyle.dates}>Due: {due}</Card.Text></Col>
                 </Row>
             <Card.Text className='mb-1'>Progress</Card.Text>
